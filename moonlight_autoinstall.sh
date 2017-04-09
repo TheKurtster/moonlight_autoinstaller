@@ -163,6 +163,7 @@ echo "Adding the GPG Key for the Moonlight Source"
 echo
 wget http://archive.itimmer.nl/itimmer.gpg
 sudo apt-key add itimmer.gpg
+rm -rf itimmer.gpg
 echo
 echo "GPG Key successfully added"
 echo
