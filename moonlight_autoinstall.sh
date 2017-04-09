@@ -212,7 +212,7 @@ echo "alias steam1080p30='moonlight stream -1080 -30fps $IPAddress'" >> /home/pi
 echo "Alias steam1080p30 successfully added"
 echo "alias steam1080p60='moonlight stream -1080 -60fps $IPAddress'" >> /home/pi/.bash_aliases
 echo "Alias steam1080p60 successfully added"
-echo "alias steampair='moonlight pair $IPAddress'"
+echo "alias steampair='moonlight pair $IPAddress'" >> /home/pi/.bash_aliases
 echo "Alias steampair successfully added"
 echo "All aliases successfully added!"
 echo "To start Moonlight in its default mode (720p 60fps), type 'steam720p60' into a bash shell"
