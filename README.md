@@ -13,10 +13,10 @@ For more information, you can visit KurtGrosser.com for the full video tutorial.
 
 To begin the installation process, enter these commands in a Bash Terminal:
 
-wget kurtgrosser.com/moonlightautoinstall
+    wget kurtgrosser.com/moonlightautoinstall
 
-chmod +x moonlightautoinstall
+    chmod +x moonlightautoinstall
 
-sudo ./moonlightautoinstall
+    sudo ./moonlightautoinstall
 
-Then just follow the on-screen instruction to install Moonlight.
+Then just follow the on-screen instructions to install Moonlight.
