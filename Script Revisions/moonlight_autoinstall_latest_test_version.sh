@@ -76,6 +76,8 @@ esac
 
 echo
 
+RetroPieChecker=$(test -e /opt/retropie/VERSION; echo "$?")
+
 echo 1. Getting Users IP Address before Proceeding
 echo ---------------------------------------------
 echo
@@ -126,7 +128,11 @@ echo 3. Force HDMI Audio at Boot
 echo ---------------------------
 echo
 
-HDMIAudioFlag=$(cat /boot/config.txt | grep "^hdmi_drive=2")
+if [ "$RetroPieChecker" = 1 ]; then
+        HDMIAudioFlag=NULL
+elif [ "$RetroPieChecker" = 0 ]; then
+        HDMIAudioFlag=$(cat /boot/config.txt | grep "^hdmi_drive=2")
+fi
 
 if [ "$HDMIAudioFlag" = "" ]; then
         echo "Appending hdmi_drive=2 flag to /boot/config.txt"
@@ -139,6 +145,7 @@ elif [ "$HDMIAudioFlag" = "hdmi_drive=2" ]; then
         echo "HDMI is forced at boot"
         echo "Skipping step"
         echo
+elif [ "$HDMIAudioFlag" = "NULL" ]; then
 fi
 
 echo 4. Adding Moonlight to the APT Sources list
@@ -169,7 +176,7 @@ else
         echo
 fi
 
-until [ $ITimmerKeyCheck = "uid                  Iwan Romario Timmer <irtimmer@gmail.com>" ] 
+until [ "$ITimmerKeyCheck" = "uid                  Iwan Romario Timmer <irtimmer@gmail.com>" ] 
 do
         curl -o /tmp/itimmer.gpg http://archive.itimmer.nl/itimmer.gpg
         sudo apt-key add /tmp/itimmer.gpg
@@ -194,7 +201,7 @@ echo
 
 MoonlightCheck=$(which moonlight)
 
-until [ $MoonlightCheck = "/usr/bin/moonlight" ]
+until [ "$MoonlightCheck" = "/usr/bin/moonlight" ]
 do
         MoonlightCheck=$(which moonlight)
         
@@ -225,13 +232,12 @@ echo 8. Adding aliases
 echo -----------------
 echo
 
-RetroPieChecker=$(test -e /opt/retropie/VERSION | echo "$?")
 SheBangLine="#!/bin/bash"
 
-var720p30=$(cat /home/pi/.bash_aliases | grep "^alias steam720p30='moonlight stream -720 -30fps $IPAddress'")
-var720p60=$(cat /home/pi/.bash_aliases | grep "^alias steam720p60='moonlight stream -720 -60fps $IPAddress'")
-var1080p30=$(cat /home/pi/.bash_aliases | grep "^alias steam1080p30='moonlight stream -1080 -30fps $IPAddress'")
-var1080p60=$(cat /home/pi/.bash_aliases | grep "^alias steam1080p60='moonlight stream -1080 -60fps $IPAddress'")
+var720p30=$(cat /home/pi/.bash_aliases | grep "^alias steam720p30='moonlight stream -720 -fps 30 $IPAddress'")
+var720p60=$(cat /home/pi/.bash_aliases | grep "^alias steam720p60='moonlight stream -720 -fps 60 $IPAddress'")
+var1080p30=$(cat /home/pi/.bash_aliases | grep "^alias steam1080p30='moonlight stream -1080 -fps 30 $IPAddress'")
+var1080p60=$(cat /home/pi/.bash_aliases | grep "^alias steam1080p60='moonlight stream -1080 -fps 60 $IPAddress'")
 SteamPair=$(cat /home/pi/.bash_aliases | grep "^alias steampair='moonlight pair $IPAddress'")
 
 case "$RetroPieChecker" in
@@ -239,13 +245,13 @@ case "$RetroPieChecker" in
         echo "RetroPie is installed, adding launch scripts."
         mkdir -p /home/pi/RetroPie/roms/SteamStreaming
         echo "$SheBangLine" > /home/pi/RetroPie/roms/SteamStreaming/steam720p30.sh
-        echo "moonlight stream -720 -30fps "$IPAddress"" >> /home/pi/RetroPie/roms/SteamStreaming/steam720p30.sh
+        echo "moonlight stream -720 -fps 30 "$IPAddress"" >> /home/pi/RetroPie/roms/SteamStreaming/steam720p30.sh
         echo "$SheBangLine" > /home/pi/RetroPie/roms/SteamStreaming/steam720p60.sh
-        echo "moonlight stream -720 -60fps "$IPAddress"" >> /home/pi/RetroPie/roms/SteamStreaming/steam720p60.sh
+        echo "moonlight stream -720 -fps 60 "$IPAddress"" >> /home/pi/RetroPie/roms/SteamStreaming/steam720p60.sh
         echo "$SheBangLine" > /home/pi/RetroPie/roms/SteamStreaming/steam1080p30.sh
-        echo "moonlight stream -1080 -30fps "$IPAddress"" >> /home/pi/RetroPie/roms/SteamStreaming/steam1080p30.sh
+        echo "moonlight stream -1080 -fps 30 "$IPAddress"" >> /home/pi/RetroPie/roms/SteamStreaming/steam1080p30.sh
         echo "$SheBangLine" > /home/pi/RetroPie/roms/SteamStreaming/steam1080p60.sh
-        echo "moonlight stream -1080 -60fps "$IPAddress"" >> /home/pi/RetroPie/roms/SteamStreaming/steam1080p60.sh
+        echo "moonlight stream -1080 -fps 60 "$IPAddress"" >> /home/pi/RetroPie/roms/SteamStreaming/steam1080p60.sh
         ;;
     1)
         echo "RetroPie is NOT installed, skipping launch scripts."
@@ -255,9 +261,9 @@ esac
 case "$var720p30" in
     "")
         echo "Adding steam720p30 alias."
-        echo "alias steam720p30='moonlight stream -720 -30fps $IPAddress'" >> /home/pi/.bash_aliases
+        echo "alias steam720p30='moonlight stream -720 -fps 30 $IPAddress'" >> /home/pi/.bash_aliases
         ;;
-    "alias steam720p30='moonlight stream -720 -30fps $IPAddress'")
+    "alias steam720p30='moonlight stream -720 -fps 30 $IPAddress'")
         echo "720p30 alias already exists, skipping."
         ;;
 esac
@@ -265,9 +271,9 @@ esac
 case "$var720p60" in
     "")
         echo "Adding steam720p60 alias."
-        echo "alias steam720p60='moonlight stream -720 -60fps $IPAddress'" >> /home/pi/.bash_aliases
+        echo "alias steam720p60='moonlight stream -720 -fps 60 $IPAddress'" >> /home/pi/.bash_aliases
         ;;
-    "alias steam720p60='moonlight stream -720 -60fps $IPAddress'")
+    "alias steam720p60='moonlight stream -720 -fps 60 $IPAddress'")
         echo "720p60 alias already exists, skipping."
         ;;
 esac
@@ -275,9 +281,9 @@ esac
 case "$var1080p30" in
     "")
         echo "Adding steam1080p30 alias."
-        echo "alias steam1080p30='moonlight stream -1080 -30fps $IPAddress'" >> /home/pi/.bash_aliases
+        echo "alias steam1080p30='moonlight stream -1080 -fps 30 $IPAddress'" >> /home/pi/.bash_aliases
         ;;
-    "alias steam1080p30='moonlight stream -1080 -30fps $IPAddress'")
+    "alias steam1080p30='moonlight stream -1080 -fps 30 $IPAddress'")
         echo "1080p30 alias already exists, skipping."
         ;;
 esac
@@ -285,9 +291,9 @@ esac
 case "$var1080p60" in
     "")
         echo "Adding steam1080p60 alias."
-        echo "alias steam1080p60='moonlight stream -1080 -60fps $IPAddress'" >> /home/pi/.bash_aliases
+        echo "alias steam1080p60='moonlight stream -1080 -fps 60 $IPAddress'" >> /home/pi/.bash_aliases
         ;;
-    "alias steam1080p60='moonlight stream -1080 -60fps $IPAddress'")
+    "alias steam1080p60='moonlight stream -1080 -fps 60 $IPAddress'")
         echo "1080p60 alias already exists, skipping."
         ;;
 esac
@@ -302,7 +308,7 @@ case "$SteamPair" in
         ;;
 esac
 
-echo "To start Moonlight in its default mode (720p 60fps), type 'steam720p60' into a bash shell"
+echo "To start Moonlight in its default mode (720p fps 60), type 'steam720p60' into a bash shell"
 echo
 echo "Changing ownership of files and folders back to user pi"
 sudo chown pi:pi /home/pi/.bash_aliases
