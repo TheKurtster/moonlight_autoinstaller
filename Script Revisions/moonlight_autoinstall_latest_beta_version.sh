@@ -13,7 +13,7 @@ echo "Welcome to the Moonlight Auto Installer for Raspberry Pi"
 echo "Created by: Kurt Grosser"
 echo "For more information, please visit: kurtgrosser.com"
 echo "Grosser Entertainment 2017"
-echo "This script is licensed under a GNU/GPL"
+echo "This script is licensed under a GNU/GPL."
 echo
 sleep 3
 
@@ -43,15 +43,15 @@ if [ "$VersionChecker" = "ID=raspbian"  ] ; then
         echo "The installer will now proceed with the privilege check."
         echo
 else
-        echo 1>&2 "You are NOT running a version of Raspbian"
-        echo 1>&2 "Please run this installer on a Rapsbian distro"
-        echo 1>&2 "The installer will now quit"
+        echo 1>&2 "You are NOT running a version of Raspbian."
+        echo 1>&2 "Please run this installer on a Rapsbian distro."
+        echo 1>&2 "The installer will now quit."
         exit 2
 fi
 
 echo "NOTE: Some of the following commands require root privilege"
-echo "You should have enabled Super User to avoid problems"
-echo "To ensure that you have enabled Super User mode, the script will now check"
+echo "You should have enabled Super User to avoid problems."
+echo "To ensure that you have enabled Super User mode, the script will now check."
 echo
 
 PrivilegeChecker=$(whoami)
@@ -131,9 +131,9 @@ echo 3. Force HDMI Audio at Boot
 echo ---------------------------
 echo
 
-if [ "$RetroPieChecker" = 1 ]; then
+if [ "$RetroPieChecker" = 0 ]; then
         HDMIAudioFlag=NULL
-elif [ "$RetroPieChecker" = 0 ]; then
+elif [ "$RetroPieChecker" = 1 ]; then
         HDMIAudioFlag=$(cat /boot/config.txt | grep "^hdmi_drive=2")
 fi
 
@@ -181,8 +181,11 @@ fi
 
 until [ "$ITimmerKeyCheck" = "uid                  Iwan Romario Timmer <irtimmer@gmail.com>" ] 
 do
-        echo "Adding the GPG Key for the Moonlight Source"
+        echo "Downloading the GPG Key for the Moonlight Source."
+        echo
         curl -o /tmp/itimmer.gpg http://archive.itimmer.nl/itimmer.gpg
+        echo
+        echo "Adding the GPG Key for the Moonlight Source."
         sudo apt-key add /tmp/itimmer.gpg
         ITimmerKeyCheck=$(sudo apt-key list | grep "Iwan Romario Timmer")
 done
@@ -213,6 +216,7 @@ do
                 echo "Installing Moonlight."
                 echo
                 sudo apt-get install moonlight-embedded
+                echo
         fi
 done
 
@@ -226,7 +230,7 @@ echo "Begining pairing process with GeForce Enabled PC."
 echo "Ensure that GeForce Experience is running."
 echo "Moonlight will provide you with a code."
 echo "Please enter that code when GeForce Experience prompts you."
-sleep 5
+sleep 10
 sudo moonlight pair "$IPAddress"
 echo
 
@@ -235,6 +239,10 @@ echo -----------------
 echo
 
 SheBangLine="#!/bin/bash"
+
+if [ ! -e /home/pi/.bash_aliases ]; then
+    touch /home/pi/.bash_aliases
+fi
 
 var720p30=$(cat /home/pi/.bash_aliases | grep "^alias steam720p30='moonlight stream -720 -fps 30 $IPAddress'")
 var720p60=$(cat /home/pi/.bash_aliases | grep "^alias steam720p60='moonlight stream -720 -fps 60 $IPAddress'")
@@ -357,6 +365,7 @@ case "$EmulationStationConfigCheck" in
                 echo "Steam has already been added to the Emulation Station Systems Configuration file, skipping."
                 ;;
 esac
+echo
 
 echo 10. Finishing Up
 echo ----------------
@@ -388,3 +397,4 @@ case "$RebootNow" in
         exit 0
         ;;
 esac
+# END OF SCRIPT
