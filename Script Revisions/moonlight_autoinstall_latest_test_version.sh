@@ -146,6 +146,7 @@ elif [ "$HDMIAudioFlag" = "hdmi_drive=2" ]; then
         echo "Skipping step"
         echo
 elif [ "$HDMIAudioFlag" = "NULL" ]; then
+        echo "HDMI audio should've been already set when setting up RetroPie, skipping."
 fi
 
 echo 4. Adding Moonlight to the APT Sources list
