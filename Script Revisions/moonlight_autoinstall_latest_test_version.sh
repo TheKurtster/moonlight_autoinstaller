@@ -176,19 +176,16 @@ ITimmerKeyCheck=$(sudo apt-key list | grep "Iwan Romario Timmer")
 
 if [ "$ITimmerCheck" = "uid                  Iwan Romario Timmer <irtimmer@gmail.com>" ]; then
         echo "Moonlight Source GPG Key already exists, skipping."
-        echo
-else
-        echo "Adding the GPG Key for the Moonlight Source"
-        echo
+        sleep 3
 fi
 
 until [ "$ITimmerKeyCheck" = "uid                  Iwan Romario Timmer <irtimmer@gmail.com>" ] 
 do
+        echo "Adding the GPG Key for the Moonlight Source"
         curl -o /tmp/itimmer.gpg http://archive.itimmer.nl/itimmer.gpg
         sudo apt-key add /tmp/itimmer.gpg
         ITimmerKeyCheck=$(sudo apt-key list | grep "Iwan Romario Timmer")
 done
-sleep 3
 echo
 
 echo 5. Updating sources
