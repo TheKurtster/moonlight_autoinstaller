@@ -150,6 +150,7 @@ elif [ "$HDMIAudioFlag" = "hdmi_drive=2" ]; then
         echo
 elif [ "$HDMIAudioFlag" = "NULL" ]; then
         echo "HDMI audio should've been already set when setting up RetroPie, skipping."
+        echo
 fi
 
 echo 4. Adding Moonlight to the APT Sources list
@@ -215,7 +216,7 @@ do
         if [ "$MoonlightCheck" = "" ]; then
                 echo "Installing Moonlight."
                 echo
-                sudo apt-get install moonlight-embedded
+                sudo apt-get install -y moonlight-embedded
                 echo
         fi
 done
@@ -339,7 +340,11 @@ elif [ "$RetroPieChecker" = 1 ]; then
         EmulationStationConfigCheck=NULL
 fi
 
-SteamESConfigCheck=$(cat /home/pi/.emulationstation/es_systems.cfg | grep "<fullname>Steam</fullname>")
+if [ -e /home/pi/.emulationstation/es_systems.cfg ]; then
+    SteamESConfigCheck=$(cat /home/pi/.emulationstation/es_systems.cfg | grep "<fullname>Steam</fullname>")
+else
+    SteamESConfigCheck=NULL
+fi
 
 if [ "$SteamESConfigCheck" = "    <fullname>Steam</fullname>" ]; then
     EmulationStationConfigCheck=INSTALLED
@@ -397,4 +402,3 @@ case "$RebootNow" in
         exit 0
         ;;
 esac
-# END OF SCRIPT
