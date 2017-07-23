@@ -3,7 +3,7 @@
 
 # Moonlight Auto Installer for Raspberry Pi
 # Kurt Grosser --- thekurtgrosser@gmail.com
-# kurtgrosser.com
+# KurtGrosser.com --- @KurtGrosser
 # Shell Script to auto-install Moonlight Embedded
 # for Raspberry Pi Users
 
