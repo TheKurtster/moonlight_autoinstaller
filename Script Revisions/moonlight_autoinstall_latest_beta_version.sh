@@ -52,7 +52,9 @@ fi
 echo "NOTE: Some of the following commands require root privilege"
 echo "You should have enabled Super User to avoid problems."
 echo "To ensure that you have enabled Super User mode, the script will now check."
+sleep 2
 echo
+
 
 PrivilegeChecker=$(whoami)
 
@@ -84,6 +86,7 @@ if [ -e /opt/retropie/VERSION ]; then
     RetroPieChecker=0
 elif [ ! -e /opt/retropie/VERSION ]; then
     RetroPieChecker=1
+fi
 
 echo 1. Getting Users IP Address before Proceeding
 echo ---------------------------------------------
