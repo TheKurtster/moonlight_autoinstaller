@@ -271,6 +271,7 @@ case "$RetroPieChecker" in
         echo "moonlight stream -1080 -fps 60 "$IPAddress"" >> /home/pi/RetroPie/roms/SteamStreaming/steam1080p60.sh
         echo "$SheBangLine" > /home/pi/RetroPie/roms/SteamStreaming/steampair.sh
         echo "moonlight pair "$IPAddress"" >> /home/pi/RetroPie/roms/SteamStreaming/steampair.sh
+        sudo chown -R pi:pi /home/pi/RetroPie/roms/SteamStreaming
         ;;
     1)
         echo "RetroPie is NOT installed, skipping launch scripts."
@@ -333,7 +334,6 @@ echo
 sleep 3
 echo "Changing ownership of files and folders back to user pi."
 sudo chown pi:pi /home/pi/.bash_aliases
-sudo chown -R pi:pi /home/pi/RetroPie/roms/SteamStreaming
 echo
 
 echo 9. Adding Steam Functions to Retropie
