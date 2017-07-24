@@ -80,7 +80,10 @@ esac
 
 echo
 
-RetroPieChecker=$(test -e /opt/retropie/VERSION | echo "$?")
+if [ -e /opt/retropie/VERSION ]; then
+    RetroPieChecker=0
+elif [ ! -e /opt/retropie/VERSION ]; then
+    RetroPieChecker=1
 
 echo 1. Getting Users IP Address before Proceeding
 echo ---------------------------------------------
