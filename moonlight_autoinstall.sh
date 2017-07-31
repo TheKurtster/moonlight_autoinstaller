@@ -82,9 +82,9 @@ esac
 
 echo
 
-if [ -e /opt/retropie/VERSION ]; then
+if [ -e /opt/retropie/ ]; then
     RetroPieChecker=0
-elif [ ! -e /opt/retropie/VERSION ]; then
+elif [ ! -e /opt/retropie/ ]; then
     RetroPieChecker=1
 fi
 
